@@ -49,26 +49,40 @@ server.get('/api/users/:id', (req, res) => {
 });
 
 // Adds a user:
+// server.post('/api/users', (req, res) => {
+//   const user = req.body;
+
+//   // I can't figure out the syntax to check user.name and user.bio inside the conditonal below, but defining them here works:
+//   const name = req.body.name;
+//   const bio = req.body.bio;
+
+//   db.insert(user)
+//     .then(user => {
+//       if (name && bio) {
+//         res.status(201).json(user);
+//       } else {
+//         res
+//           .status(400)
+//           .json({ errorMessage: 'Please provide name and bio for the user.' });
+//       }
+//     })
+//     .catch(err => {
+//       res.status(500).json({ message: 'error adding user' });
+//     });
+// });
+
+// Adds a user:
 server.post('/api/users', (req, res) => {
   const user = req.body;
-
-  // I can't figure out the syntax to check user.name and user.bio inside the conditonal below, but defining them here works:
-  const name = req.body.name;
-  const bio = req.body.bio;
-
-  db.insert(user)
-    .then(user => {
-      if (name && bio) {
-        res.status(201).json(user);
-      } else {
-        res
-          .status(400)
-          .json({ errorMessage: 'Please provide name and bio for the user.' });
-      }
-    })
-    .catch(err => {
-      res.status(500).json({ message: 'error adding user' });
-    });
+  if (user.name && user.bio) {
+    db.insert(user)
+      .then(user => res.status(201).json(user))
+      .catch(err => res.status(500).json({ message: 'error adding user' }));
+  } else {
+    res
+      .status(400)
+      .json({ errorMessage: 'Please provide name and bio for the user.' });
+  }
 });
 
 // Deletes a user:
