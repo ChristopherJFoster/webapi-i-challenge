@@ -49,29 +49,6 @@ server.get('/api/users/:id', (req, res) => {
 });
 
 // Adds a user:
-// server.post('/api/users', (req, res) => {
-//   const user = req.body;
-
-//   // I can't figure out the syntax to check user.name and user.bio inside the conditonal below, but defining them here works:
-//   const name = req.body.name;
-//   const bio = req.body.bio;
-
-//   db.insert(user)
-//     .then(user => {
-//       if (name && bio) {
-//         res.status(201).json(user);
-//       } else {
-//         res
-//           .status(400)
-//           .json({ errorMessage: 'Please provide name and bio for the user.' });
-//       }
-//     })
-//     .catch(err => {
-//       res.status(500).json({ message: 'error adding user' });
-//     });
-// });
-
-// Adds a user:
 server.post('/api/users', (req, res) => {
   const user = req.body;
   if (user.name && user.bio) {
@@ -90,7 +67,7 @@ server.delete('/api/users/:id', (req, res) => {
   const id = req.params.id;
   db.remove(id)
     .then(user => {
-      if (id) {
+      if (user === 1) {
         // Sends general 'success' code, then ends the transmission (I forgot the proper name) since there is no need to send any other information.
         res.status(200).json(user);
       } else {
