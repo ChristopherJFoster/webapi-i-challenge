@@ -65,11 +65,13 @@ server.post('/api/users', (req, res) => {
 // Deletes a user:
 server.delete('/api/users/:id', (req, res) => {
   const id = req.params.id;
+  let deletedUser;
+  db.findById(id).then(user => (deletedUser = user));
   db.remove(id)
     .then(user => {
       if (user === 1) {
         // Sends general 'success' code, then ends the transmission (I forgot the proper name) since there is no need to send any other information.
-        res.status(200).json(user);
+        res.status(200).json(deletedUser);
       } else {
         res
           .status(404)
